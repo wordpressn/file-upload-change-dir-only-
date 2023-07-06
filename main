@@ -1,0 +1,21 @@
+// Set custom upload folder
+function wp_set_custom_upload_folder($uploads) {
+    //Use a variable to hold custom directory path. Make sure to use / at the beginning.
+    $uploadDir = 'wp-content/avatar-upload';
+
+    //Use ABSPATH to get the root directory
+    $uploads['path'] = ABSPATH . $uploadDir;
+    //Use site_url() to get the URL of the website up to that directory.
+    $uploads['url'] = site_url('/'.$uploadDir);
+
+    //Note: ABSPATH and site_url() don't output a trailing slash
+   
+    $uploads['basedir'] =  ABSPATH . 'wp-content'; 
+    $uploads['baseurl'] =  site_url('/wp-content');
+    
+    if (!file_exists($uploads['path'])) {
+      mkdir($uploads['path'], 0755, true);
+    }
+    return $uploads;
+}
+add_filter('upload_dir', 'wp_set_custom_upload_folder');   
